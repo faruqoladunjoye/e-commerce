@@ -1,4 +1,5 @@
 const User = require('./../models/userModel');
+const AppError = require('./../utils/appError');
 
 exports.createUser = async (req, res) => {
   try {
@@ -13,10 +14,7 @@ exports.createUser = async (req, res) => {
         },
       });
     } else {
-      res.status(400).json({
-        status: 'fail',
-        message: 'Email already exists!',
-      });
+      return next(new AppError('User already exists!', 404));
     }
   } catch (err) {
     res.status(400).json({

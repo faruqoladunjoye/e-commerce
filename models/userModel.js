@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 var userSchema = new mongoose.Schema({
   name: {
@@ -11,6 +12,30 @@ var userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
+  photo: {
+    type: String,
+  },
+  role: {
+    type: String,
+    enum: ['user', 'guide', 'lead-guide', 'admin'],
+    default: 'user',
+  },
+  cart: {
+    type: Array,
+    default: [],
+  },
+  address: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Address',
+    },
+  ],
+  wishlist: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Product',
+    },
+  ],
   password: {
     type: String,
     required: [true, 'Please provide a password'],
