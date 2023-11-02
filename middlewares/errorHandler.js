@@ -51,12 +51,12 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
-    let error = { ...err };
-    error.message = err.message;
+    // let error = Object.create(err);
+    let error = Object.create(err, Object.getOwnPropertyDescriptors(err));
 
-    if (err.constructor.name === 'CastError') error = handleCastErrorDB(error);
-    if (err.constructor.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (err.constructor.name === 'ValidationError')
+    if (error.name === 'CastError') error = handleCastErrorDB(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error.name === 'ValidationError')
       error = handleValidationErrorDB(error);
 
     sendErrorProd(error, req, res);

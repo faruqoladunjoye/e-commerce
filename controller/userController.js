@@ -1,25 +1,22 @@
 const User = require('./../models/userModel');
 const AppError = require('./../utils/appError');
+const catchAsync = require('./../utils/catchAsync');
 
-exports.createUser = async (req, res) => {
-  try {
-    const email = req.body.email;
-    const user = await User.findOne({ email });
-    if (!user) {
-      const newUser = await User.create(req.body);
-      res.status(201).json({
-        status: 'success',
-        data: {
-          user: newUser,
-        },
-      });
-    } else {
-      return next(new AppError('User already exists!', 404));
-    }
-  } catch (err) {
-    res.status(400).json({
-      status: 'fail',
-      message: err,
-    });
-  }
+exports.getAllUsers = catchAsync(async (req, res) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    status: 'success',
+    results: users.length,
+    data: {
+      users,
+    },
+  });
+});
+
+exports.createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
 };
