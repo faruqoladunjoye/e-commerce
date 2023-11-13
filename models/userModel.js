@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  cart: {
+    type: Array,
+    default: [],
+  },
+  address: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Address',
+  },
+  wishlist: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Product',
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
